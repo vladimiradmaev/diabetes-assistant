@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помощник диабетика</title>
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAFdQTFRFAAAA/wAAt7e3mpqaZmZmMzMz/wAAZgAAtlpaZjMzmQAAmWYzZjMA/zMzzJmZmWYAMwAAt5lmMzMAzGZm/2ZmmTMAZgAAzDMzZjNmmZmZ////Ri44cwAAAAF0Uk5TAEDm2GYAAAABYktHRAsf18TAAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH5gQUBDgSy6n9OgAAAJRJREFUOMvF01kSwyAIBmCjiSbu0fsftRYnlsxk+vSEBxX5FURdEARBdF07DCPpFkyT996FaA4wxvyMi8zlgFJNzZDxIgDe29qQg1ICaq1PBjGuuQQZYwdD732/IIeZAuScS45zPhj0GRd49gIppZMhBDFMDEOhqBQEP4FWIbSttw6F/2aMTfPe+4Y3I/nL6wU/gC/gLwA+ABu5J0k1h9jEAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA0LTIwVDA0OjU2OjE4KzAwOjAwI90qiQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wNC0yMFQwNDo1NjoxOCswMDowMFK4kjUAAAAASUVORK5CYII=" type="image/png">
+    <link rel="shortcut icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAFdQTFRFAAAA/wAAt7e3mpqaZmZmMzMz/wAAZgAAtlpaZjMzmQAAmWYzZjMA/zMzzJmZmWYAMwAAt5lmMzMAzGZm/2ZmmTMAZgAAzDMzZjNmmZmZ////Ri44cwAAAAF0Uk5TAEDm2GYAAAABYktHRAsf18TAAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH5gQUBDgSy6n9OgAAAJRJREFUOMvF01kSwyAIBmCjiSbu0fsftRYnlsxk+vSEBxX5FURdEARBdF07DCPpFkyT996FaA4wxvyMi8zlgFJNzZDxIgDe29qQg1ICaq1PBjGuuQQZYwdD732/IIeZAuScS45zPhj0GRd49gIppZMhBDFMDEOhqBQEP4FWIbSttw6F/2aMTfPe+4Y3I/nL6wU/gC/gLwA+ABu5J0k1h9jEAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDIyLTA0LTIwVDA0OjU2OjE4KzAwOjAwI90qiQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyMi0wNC0yMFQwNDo1NjoxOCswMDowMFK4kjUAAAAASUVORK5CYII=" type="image/x-icon"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Помощник диабетика</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard">Панель управления</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#bloodsugar">Сахар крови</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#food-analysis">Анализ пищи</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#settings">Настройки</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div id="alerts"></div>
+
+        <!-- User setup -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <p class="mb-0">ID пользователя: <span id="user-id-display" class="fw-bold"></span></p>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="page">
+            <h2>Панель управления</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Тренд сахара крови</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="loadBloodSugarReadings()">Обновить</button>
+                        </div>
+                        <div class="card-body chart-container">
+                            <canvas id="bloodsugar-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Быстрый ввод</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="blood-sugar-form">
+                                <div class="mb-3">
+                                    <label for="blood-sugar-value" class="form-label">Сахар крови (ммоль/л)</label>
+                                    <input type="number" step="0.1" min="1" max="30" class="form-control" id="blood-sugar-value" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blood Sugar -->
+        <div id="bloodsugar" class="page">
+            <h2>Показания сахара крови</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Недавние показания</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="bloodsugar-list" class="bloodsugar-list">
+                                <!-- Blood sugar readings will be displayed here -->
+                            </div>
+                            <div id="no-readings-message" class="alert alert-info" style="display: none;">
+                                Показания сахара крови не найдены. Добавьте первое показание, используя форму.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Добавить показание</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="blood-sugar-form-full">
+                                <div class="mb-3">
+                                    <label for="blood-sugar-value-full" class="form-label">Сахар крови (ммоль/л)</label>
+                                    <input type="number" step="0.1" min="1" max="30" class="form-control" id="blood-sugar-value-full" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Синхронизация</h5>
+                        </div>
+                        <div class="card-body">
+                            <button id="sync-libre-btn" class="btn btn-success w-100 mb-2">Синхронизировать с LibreView</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Analysis -->
+        <div id="food-analysis" class="page">
+            <h2>Анализ пищи</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Анализировать пищу</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="food-analysis-form" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="food-photo" class="form-label">Фото пищи</label>
+                                    <input type="file" class="form-control" id="food-photo" name="foodPhoto" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="food-weight" class="form-label">Вес блюда (грамм, необязательно)</label>
+                                    <input type="number" class="form-control" id="food-weight" name="foodWeight" step="1" min="1" placeholder="Введите вес блюда">
+                                    <div class="form-text">Точный вес поможет рассчитать дозу инсулина более точно</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Анализировать</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="food-analysis-result" class="card mb-4" style="display: none;">
+                        <div class="card-header">
+                            <h5 class="mb-0">Результат анализа</h5>
+                        </div>
+                        <div id="analysis-content" class="card-body">
+                            <!-- Analysis results will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div id="settings" class="page">
+            <h2>Настройки</h2>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Настройки управления диабетом</h5>
+                </div>
+                <div class="card-body">
+                    <form id="settings-form">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="target-min" class="form-label">Целевой сахар крови (ммоль/л)</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">Мин</span>
+                                            <input type="number" step="0.1" min="3.5" max="8.0" class="form-control" id="target-min" placeholder="4.0" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">Макс</span>
+                                            <input type="number" step="0.1" min="3.5" max="15.0" class="form-control" id="target-max" placeholder="8.0" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="iob-duration" class="form-label">Продолжительность действия инсулина (часы)</label>
+                                <input type="number" step="0.5" min="2" max="8" class="form-control" id="iob-duration" placeholder="4.0" required>
+                            </div>
+                        </div>
+                        
+                        <h3 class="mt-4">Фактор чувствительности к инсулину</h3>
+                        <p class="text-muted">Настройте фактор чувствительности к инсулину для разных периодов дня</p>
+                        <div id="insulin-sensitivity-container">
+                            <!-- Периоды будут добавлены динамически через JavaScript -->
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <span id="sensitivity-total-hours-display" class="text-danger">Текущая сумма: 0 часов из 24 необходимых</span>
+                            </div>
+                            <div class="col text-end">
+                                <button type="button" class="btn btn-primary" id="add-sensitivity-period-btn">Добавить период</button>
+                            </div>
+                        </div>
+                        
+                        <h3 class="mt-4">Соотношение инсулина к углеводам</h3>
+                        <p class="text-muted">Настройте соотношение инсулина к углеводам для разных периодов дня</p>
+                        <div id="carb-ratio-container">
+                            <!-- Периоды будут добавлены динамически через JavaScript -->
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <span id="carb-ratio-total-hours-display" class="text-danger">Текущая сумма: 0 часов из 24 необходимых</span>
+                            </div>
+                            <div class="col text-end">
+                                <button type="button" class="btn btn-primary" id="add-carb-ratio-period-btn">Добавить период</button>
+                            </div>
+                        </div>
+                        
+                        <h3 class="mt-4">Базовые коэффициенты инсулина</h3>
+                        <div id="insulin-coefficients-container">
+                            <!-- Периоды будут добавлены динамически через JavaScript -->
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <span id="total-hours-display" class="text-danger">Текущая сумма: 0 часов из 24 необходимых</span>
+                            </div>
+                            <div class="col text-end">
+                                <button type="button" class="btn btn-primary" id="add-period-btn">Добавить период</button>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Сохранить настройки</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    
+    <!-- Use Luxon with Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"></script>
+    
+    <!-- ChartJS Annotation plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.0.0/dist/chartjs-plugin-annotation.min.js"></script>
+    
+    <!-- Chart.js initialization with Luxon adapter -->
+    <script src="charts-init.js"></script>
+    
+    <!-- Main application script -->
+    <script src="app.js"></script>
+</body>
+</html> 
